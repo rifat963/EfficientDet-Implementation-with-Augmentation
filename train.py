@@ -124,7 +124,7 @@ if __name__== '__main__':
 
     ax.set_axis_off()
     ax.imshow(numpy_image);
-    #plt.show()
+    plt.show()
 
     net = get_net()
 
