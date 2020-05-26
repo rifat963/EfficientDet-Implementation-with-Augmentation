@@ -186,7 +186,7 @@ class Fitter:
 def get_net():
     config = get_efficientdet_config('tf_efficientdet_d5')
     net = EfficientDet(config, pretrained_backbone=False)
-    checkpoint = torch.load('~/efficientnet-weigths/efficientdet_d5-ef44aea8.pth')
+    checkpoint = torch.load('efficientdet_d5-ef44aea8.pth')
     # checkpoint = torch.load('Efficientnet-weights-old/efficientdet_d6-51cb0132.pth')
     # checkpoint = torch.load('Efficientnet-weights-old/efficientdet_d7-f05bf714.pth')
 
