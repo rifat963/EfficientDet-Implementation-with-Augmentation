@@ -1,26 +1,19 @@
 import sys
 sys.path.insert(0, "tim-efficientdet-package")
 
-from effdet import get_efficientdet_config, EfficientDet, DetBenchTrain
-
 import torch
 import os
-from datetime import datetime
-import time
 import random
 import cv2
 import pandas as pd
 import numpy as np
-import albumentations as A
 import matplotlib.pyplot as plt
-from albumentations.pytorch.transforms import ToTensorV2
 from sklearn.model_selection import StratifiedKFold
-from torch.utils.data import Dataset,DataLoader
+from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.sampler import SequentialSampler, RandomSampler
-from glob import glob
 from augmentation.augmentation import DatasetRetriever,get_train_transforms,get_valid_transforms
 from train_config import TrainGlobalConfig
-from model import Fitter,get_net
+from model import Fitter, get_net
 SEED = 42
 
 def seed_everything(seed):
@@ -91,10 +84,8 @@ if __name__== '__main__':
         marking[column] = bboxs[:,i]
 
     marking.drop(columns=['bbox'], inplace=True)
-    #print(marking.head())
 
     df_folds = StratifiedKFold_CrossValidation(marking,bboxs)
-    #print(df_folds.head())
 
     fold_number = 0
 
@@ -111,30 +102,27 @@ if __name__== '__main__':
         transforms=get_valid_transforms(),
         test=True,
     )
-    #----- visualize the image
+    """
+    #----- visualize the image --------
     image, target, image_id = train_dataset[5]
     boxes = target['boxes'].cpu().numpy().astype(np.int32)
-
     numpy_image = image.permute(1, 2, 0).cpu().numpy()
-
     fig, ax = plt.subplots(1, 1, figsize=(16, 8))
-
     for box in boxes:
         cv2.rectangle(numpy_image, (box[1], box[0]), (box[3], box[2]), (0, 1, 0), 2)
-
     ax.set_axis_off()
     ax.imshow(numpy_image);
     plt.show()
+    """
 
     net = get_net()
 
     run_training()
+
     print(torch.cuda.get_device_name(0))
     print(torch.cuda.is_available())
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print('Using device:', device)
-    print(torch.cuda.max_memory_allocated(0))
-
     # Additional Info when using cuda
     if device.type == 'cuda':
         print(torch.cuda.get_device_name(0))

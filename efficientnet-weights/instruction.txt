@@ -1,0 +1,6 @@
+download efficientnet-weights using the following command:
+
+! wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1JmJVQTmz_gfeOYSzIkACzT0z7QnQmV4f' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1JmJVQTmz_gfeOYSzIkACzT0z7QnQmV4f" -O efficientdet_d5-ef44aea8.zip && rm -rf /tmp/cookies.txt
+
+
+! unzip -qq efficientdet_d5-ef44aea8.zip

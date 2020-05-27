@@ -9,20 +9,9 @@ import torch
 import os
 from datetime import datetime
 import time
-import random
-import cv2
-import pandas as pd
-import numpy as np
-import albumentations as A
-import matplotlib.pyplot as plt
-from albumentations.pytorch.transforms import ToTensorV2
-from sklearn.model_selection import StratifiedKFold
-from torch.utils.data import Dataset,DataLoader
-from torch.utils.data.sampler import SequentialSampler, RandomSampler
 from glob import glob
 import warnings
 warnings.filterwarnings("ignore")
-
 
 class AverageMeter(object):
     """Computes and stores the average and current value"""
@@ -182,19 +171,13 @@ class Fitter:
         with open(self.log_path, 'a+') as logger:
             logger.write(f'{message}\n')
 
-
 def get_net():
     config = get_efficientdet_config('tf_efficientdet_d5')
     net = EfficientDet(config, pretrained_backbone=False)
-    checkpoint = torch.load('efficientdet_d5-ef44aea8.pth')
-    # checkpoint = torch.load('Efficientnet-weights-old/efficientdet_d6-51cb0132.pth')
-    # checkpoint = torch.load('Efficientnet-weights-old/efficientdet_d7-f05bf714.pth')
-
+    checkpoint = torch.load('efficientnet-weigths/efficientdet_d5-ef44aea8.pth')
     net.load_state_dict(checkpoint)
     config.num_classes = 1
     config.image_size = 512
     net.class_net = HeadNet(config, num_outputs=config.num_classes, norm_kwargs=dict(eps=.001, momentum=.01))
     return DetBenchTrain(net, config)
 
-
-#net = get_net()

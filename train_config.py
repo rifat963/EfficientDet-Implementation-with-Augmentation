@@ -1,31 +1,12 @@
 import sys
-sys.path.insert(0, "tim-efficientdet-package")
-
-from effdet import get_efficientdet_config, EfficientDet, DetBenchTrain
-
 import torch
-import os
-from datetime import datetime
-import time
-import random
-import cv2
-import pandas as pd
-import numpy as np
-import albumentations as A
-import matplotlib.pyplot as plt
-from albumentations.pytorch.transforms import ToTensorV2
-from sklearn.model_selection import StratifiedKFold
-from torch.utils.data import Dataset,DataLoader
-from torch.utils.data.sampler import SequentialSampler, RandomSampler
-from glob import glob
 import warnings
 warnings.filterwarnings("ignore")
-
 
 class TrainGlobalConfig:
     num_workers = 2
     batch_size = 4
-    n_epochs = 1 # n_epochs = 40
+    n_epochs = 30 # n_epochs = 40
     lr = 0.0002
 
     folder = 'effdet5-cutmix-augmix'
