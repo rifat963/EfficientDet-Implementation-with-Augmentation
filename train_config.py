@@ -6,7 +6,7 @@ warnings.filterwarnings("ignore")
 class TrainGlobalConfig:
     num_workers = 2
     batch_size = 4
-    n_epochs = 40 # n_epochs = 40
+    n_epochs = 30 # n_epochs = 40
     lr = 0.0002
 
     folder = 'effdet5-cutmix-augmix'
@@ -34,7 +34,7 @@ class TrainGlobalConfig:
     scheduler_params = dict(
         mode='min',
         factor=0.5,
-        patience=1,
+        patience=2,
         verbose=False,
         threshold=0.0001,
         threshold_mode='abs',
