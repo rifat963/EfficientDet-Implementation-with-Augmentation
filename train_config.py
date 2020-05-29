@@ -6,10 +6,10 @@ warnings.filterwarnings("ignore")
 class TrainGlobalConfig:
     num_workers = 2
     batch_size = 4
-    n_epochs = 30 # n_epochs = 40
+    n_epochs = 40 # n_epochs = 40
     lr = 0.0002
 
-    folder = 'effdet5-cutmix-augmix-fold2'
+    folder = 'effdet5-cutmix-augmix-fold3'
 
     # -------------------
     verbose = True
