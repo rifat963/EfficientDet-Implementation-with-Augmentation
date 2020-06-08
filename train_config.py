@@ -9,7 +9,7 @@ class TrainGlobalConfig:
     n_epochs = 100 # n_epochs = 40
     lr = 0.0002
 
-    folder = 'effdet5-mosaic'
+    folder = 'effdet5-mosaic-100'
 
     # -------------------
     verbose = True
