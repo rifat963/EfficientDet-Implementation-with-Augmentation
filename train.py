@@ -87,7 +87,7 @@ if __name__== '__main__':
 
     df_folds = StratifiedKFold_CrossValidation(marking,bboxs)
 
-    fold_number = 1
+    fold_number = 3
 
     train_dataset = DatasetRetriever(
         image_ids=df_folds[df_folds['fold'] != fold_number].index.values,
