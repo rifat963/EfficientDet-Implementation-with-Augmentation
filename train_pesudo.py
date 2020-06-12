@@ -317,8 +317,8 @@ import cv2
 import numpy as np
 from torch.utils.data import Dataset
 
-TRAIN_ROOT_PATH = '/custom-dataset/train'
-TEST_ROOT_PATH = '/custom-dataset/test'
+TRAIN_ROOT_PATH = 'custom-dataset/train'
+TEST_ROOT_PATH = 'custom-dataset/test'
 
 class DatasetRetriever(Dataset):
 
@@ -686,7 +686,7 @@ def predict_test(data_loader,net):
             boxes[:, 3] = boxes[:, 3] - boxes[:, 1]
 
             def generate_train(test_df_pseudo):
-                train_df = pd.read_csv('/custom-dataset/train.csv')
+                train_df = pd.read_csv('custom-dataset/train.csv')
 
                 bboxs = np.stack(train_df['bbox'].apply(lambda x: np.fromstring(x[1:-1], sep=',')))
                 for i, column in enumerate(['x', 'y', 'w', 'h']):
