@@ -714,7 +714,7 @@ def predict_test(data_loader,net):
 
 
 def generate_train(test_df_pseudo):
-    train_df = pd.read_csv('train.csv')
+    train_df = pd.read_csv('custom-dataset/train.csv')
 
     bboxs = np.stack(train_df['bbox'].apply(lambda x: np.fromstring(x[1:-1], sep=',')))
     for i, column in enumerate(['x', 'y', 'w', 'h']):
