@@ -23,11 +23,11 @@ from torch.utils.data import Dataset, DataLoader
 import gc
 import re
 
-Round_N = 5
+Round_N = 2
 class TrainGlobalConfig:
     num_workers = 4
     batch_size = 4
-    n_epochs = 30
+    n_epochs = 20
     lr = 0.0002
 
     folder = 'effdet5-pesudo-labeling'
@@ -42,7 +42,7 @@ class TrainGlobalConfig:
     scheduler_params = dict(
         mode='min',
         factor=0.5,
-        patience=1,
+        patience=2,
         verbose=False,
         threshold=0.0001,
         threshold_mode='abs',
