@@ -33,7 +33,7 @@ def get_train_transforms():
             A.ToGray(p=0.01),
             A.HorizontalFlip(p=0.5),
             A.VerticalFlip(p=0.5),
-            A.Resize(height=512, width=512, p=1),
+            #A.Resize(height=512, width=512, p=1),
             A.Cutout(num_holes=8, max_h_size=64, max_w_size=64, fill_value=0, p=0.5),
             ToTensorV2(p=1.0),
         ],
@@ -49,7 +49,7 @@ def get_train_transforms():
 def get_valid_transforms():
     return A.Compose(
         [
-            A.Resize(height=512, width=512, p=1.0),
+            #A.Resize(height=512, width=512, p=1.0),
             ToTensorV2(p=1.0),
         ],
         p=1.0,
@@ -76,10 +76,11 @@ class DatasetRetriever(Dataset):
     def __getitem__(self, index: int):
         image_id = self.image_ids[index]
 
-        if self.test or random.random() > 0.5:
+        if self.test: #or random.random() > 0.5:
             image, boxes = self.load_image_and_boxes(index)
         else:
-            image, boxes = self.load_cutmix_image_and_boxes(index)
+            image, boxes = self.load_image_and_boxes(index)
+            #image, boxes = self.load_cutmix_image_and_boxes(index)
 
         # there is only one class
         labels = torch.ones((boxes.shape[0],), dtype=torch.int64)
@@ -100,6 +101,7 @@ class DatasetRetriever(Dataset):
                     image = sample['image']
                     target['boxes'] = torch.stack(tuple(map(torch.tensor, zip(*sample['bboxes'])))).permute(1, 0)
                     target['boxes'][:, [0, 1, 2, 3]] = target['boxes'][:, [1, 0, 3, 2]]  # yxyx: be warning
+                    target['labels'] = torch.stack(sample['labels'])  # <--- add this!
                     break
 
         return image, target, image_id
