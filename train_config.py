@@ -4,9 +4,9 @@ import warnings
 warnings.filterwarnings("ignore")
 
 class TrainGlobalConfig:
-    num_workers = 2
+    num_workers = 4
     batch_size = 4
-    n_epochs = 50 # n_epochs = 40
+    n_epochs = 40 # n_epochs = 40
     lr = 0.0002
 
     folder = 'effdet5-without-cutmix-fold-4'
