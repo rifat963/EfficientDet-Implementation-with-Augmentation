@@ -172,6 +172,7 @@ class Fitter:
             logger.write(f'{message}\n')
 
 def get_net():
+    torch.cuda.empty_cache() 
     config = get_efficientdet_config('tf_efficientdet_d5')
     net = EfficientDet(config, pretrained_backbone=False)
     checkpoint = torch.load('efficientdet_d5-ef44aea8.pth')
