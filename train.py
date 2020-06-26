@@ -78,7 +78,7 @@ if __name__== '__main__':
 
     seed_everything(SEED)
 
-    marking = pd.read_csv('custom-dataset/train.csv')
+    marking = pd.read_csv('custom-dataset/merged_train.csv')
 
     bboxs = np.stack(marking['bbox'].apply(lambda x: np.fromstring(x[1:-1], sep=',')))
     for i, column in enumerate(['x', 'y', 'w', 'h']):
@@ -88,7 +88,7 @@ if __name__== '__main__':
 
     df_folds = StratifiedKFold_CrossValidation(marking,bboxs)
 
-    fold_number = 4
+    fold_number = 3
 
     train_dataset = DatasetRetriever(
         image_ids=df_folds[df_folds['fold'] != fold_number].index.values,
