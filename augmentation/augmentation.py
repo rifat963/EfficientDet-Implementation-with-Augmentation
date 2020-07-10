@@ -114,7 +114,7 @@ class DatasetRetriever(Dataset):
 
     def load_image_and_boxes(self, index):
         image_id = self.image_ids[index]
-        print(image_id)
+        #print(image_id)
         image = cv2.imread(f'{TRAIN_ROOT_PATH}/{image_id}.jpg', cv2.IMREAD_COLOR)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.float32)
         image /= 255.0

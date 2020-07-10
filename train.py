@@ -83,7 +83,7 @@ if __name__== '__main__':
     #bboxs = np.stack(marking['bbox'].apply(lambda x: np.fromstring(x[1:-1], sep=',')))
     #print(bboxs)
 
-    marking = pd.read_csv('custom-dataset/train.csv')
+    marking = pd.read_csv('custom-dataset/filtered_train.csv')
     bboxs = np.stack(marking['bbox'].apply(lambda x: np.fromstring(x[1:-1], sep=',')))
     for i, column in enumerate(['x', 'y', 'w', 'h']):
         marking[column] = bboxs[:,i]
@@ -97,7 +97,7 @@ if __name__== '__main__':
 
     df_folds = StratifiedKFold_CrossValidation(marking,bboxs)
 
-    fold_number = 3
+    fold_number = 4
 
     train_dataset = DatasetRetriever(
         image_ids=df_folds[df_folds['fold'] != fold_number].index.values,
@@ -128,16 +128,16 @@ if __name__== '__main__':
     
     net = get_net()
 
-    print(torch.cuda.get_device_name(0))
-    print(torch.cuda.is_available())
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    print('Using device:', device)
-    # Additional Info when using cuda
-    if device.type == 'cuda':
-        print(torch.cuda.get_device_name(0))
-        print('Memory Usage:')
-        print('Allocated:', round(torch.cuda.memory_allocated(0) / 1024 ** 3, 1), 'GB')
-        print('Cached:   ', round(torch.cuda.memory_cached(0) / 1024 ** 3, 1), 'GB')
+#    print(torch.cuda.get_device_name(0))
+#    print(torch.cuda.is_available())
+#    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+#    print('Using device:', device)
+#    # Additional Info when using cuda
+#    if device.type == 'cuda':
+#        print(torch.cuda.get_device_name(0))
+#        print('Memory Usage:')
+#        print('Allocated:', round(torch.cuda.memory_allocated(0) / 1024 ** 3, 1), 'GB')
+#        print('Cached:   ', round(torch.cuda.memory_cached(0) / 1024 ** 3, 1), 'GB')
 
     run_training()
 
