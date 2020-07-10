@@ -79,6 +79,7 @@ if __name__== '__main__':
     seed_everything(SEED)
 
     marking = pd.read_csv('custom-dataset/train.csv')
+    print(marking)
     marking["bbox"] = "["+marking['x'].map(str)+","+marking['y'].map(str)+","+marking['w'].map(str)+","+marking['h'].map(str)+"]"    
     bboxs = np.stack(marking['bbox'].apply(lambda x: np.fromstring(x[1:-1], sep=',')))
     
