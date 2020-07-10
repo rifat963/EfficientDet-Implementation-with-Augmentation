@@ -5,9 +5,9 @@ warnings.filterwarnings("ignore")
 
 class TrainGlobalConfig:
     num_workers = 2
-    batch_size = 4
-    n_epochs = 40 # n_epochs = 40
-    lr = 0.0002
+    batch_size = 2
+    n_epochs = 60 # n_epochs = 40
+    lr = 0.001 # original 0.0002
 
     folder = 'effdet5-merged-data-cutmix-fold-3'
 
