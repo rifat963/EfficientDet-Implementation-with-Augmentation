@@ -19,9 +19,9 @@ from torch.utils.data.sampler import SequentialSampler, RandomSampler
 from glob import glob
 
 # original dataset
-#TRAIN_ROOT_PATH = 'custom-dataset/train'
+TRAIN_ROOT_PATH = 'custom-dataset/train'
 # merged dataset
-TRAIN_ROOT_PATH = 'custom-dataset/merged_dataset'
+#TRAIN_ROOT_PATH = 'custom-dataset/train'
 
 def get_train_transforms():
     return A.Compose(
