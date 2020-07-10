@@ -78,15 +78,22 @@ if __name__== '__main__':
 
     seed_everything(SEED)
 
-    marking = pd.read_csv('custom-dataset/train.csv')
-    print(marking)
-    marking["bbox"] = "["+marking['x'].map(str)+","+marking['y'].map(str)+","+marking['w'].map(str)+","+marking['h'].map(str)+"]"    
+    #marking = pd.read_csv('custom-dataset/train.csv')
+    #marking["bbox"] = "["+marking['x'].map(str)+","+marking['y'].map(str)+","+marking['w'].map(str)+","+marking['h'].map(str)+"]"    
+    #bboxs = np.stack(marking['bbox'].apply(lambda x: np.fromstring(x[1:-1], sep=',')))
+    #print(bboxs)
+
+    marking = pd.read_csv('train.csv')
     bboxs = np.stack(marking['bbox'].apply(lambda x: np.fromstring(x[1:-1], sep=',')))
-    
     for i, column in enumerate(['x', 'y', 'w', 'h']):
         marking[column] = bboxs[:,i]
+    marking.drop(columns=['bbox'], inplace=True)    
 
-    marking.drop(columns=['bbox'], inplace=True)
+
+    #for i, column in enumerate(['x', 'y', 'w', 'h']):
+    #    marking[column] = bboxs[:,i]
+
+    #marking.drop(columns=['bbox'], inplace=True)
 
     df_folds = StratifiedKFold_CrossValidation(marking,bboxs)
 
