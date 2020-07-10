@@ -83,7 +83,7 @@ if __name__== '__main__':
     #bboxs = np.stack(marking['bbox'].apply(lambda x: np.fromstring(x[1:-1], sep=',')))
     #print(bboxs)
 
-    marking = pd.read_csv('train.csv')
+    marking = pd.read_csv('custom-dataset/train.csv')
     bboxs = np.stack(marking['bbox'].apply(lambda x: np.fromstring(x[1:-1], sep=',')))
     for i, column in enumerate(['x', 'y', 'w', 'h']):
         marking[column] = bboxs[:,i]
