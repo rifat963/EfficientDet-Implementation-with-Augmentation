@@ -54,7 +54,7 @@ class Fitter:
             {'params': [p for n, p in param_optimizer if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}
         ]
 
-        self.optimizer = torch.optim.AdamW(self.model.parameters(), lr=config.lr)
+        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=config.lr)
         self.scheduler = config.SchedulerClass(self.optimizer, **config.scheduler_params)
         self.log(f'Fitter prepared. Device is {self.device}')
 
@@ -179,6 +179,6 @@ def get_net():
     net.load_state_dict(checkpoint)
     config.num_classes = 1
     config.image_size = 1024
-    net.class_net = HeadNet(config, num_outputs=config.num_classes, norm_kwargs=dict(eps=.001, momentum=.01))
+    net.class_net = HeadNet(config, num_outputs=config.num_classes, norm_kwargs=dict(eps=.001, momentum=.937))
     return DetBenchTrain(net, config)
 
