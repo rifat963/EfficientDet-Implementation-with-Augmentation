@@ -9,7 +9,7 @@ class TrainGlobalConfig:
     n_epochs = 100 # n_epochs = 40
     lr = 0.01 # original 0.0002
 
-    folder = 'effdet5-filtered-data-cutmix-fold-3'
+    folder = 'effdet5-clean-data-cutmix-fold-3'
 
     # -------------------
     verbose = True

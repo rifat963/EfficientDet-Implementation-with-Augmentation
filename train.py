@@ -89,10 +89,8 @@ if __name__== '__main__':
         marking[column] = bboxs[:,i]
     marking.drop(columns=['bbox'], inplace=True)    
 
-
     #for i, column in enumerate(['x', 'y', 'w', 'h']):
     #    marking[column] = bboxs[:,i]
-
     #marking.drop(columns=['bbox'], inplace=True)
 
     df_folds = StratifiedKFold_CrossValidation(marking,bboxs)
