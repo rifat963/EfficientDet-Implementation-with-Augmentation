@@ -7,9 +7,9 @@ class TrainGlobalConfig:
     num_workers = 4
     batch_size = 2
     n_epochs = 100 # n_epochs = 40
-    lr = 0.01 # original 0.0002
+    lr = 0.001 # original 0.0002
 
-    folder = 'effdet5-clean-data-cutmix-fold-3'
+    folder = 'effdet5-clean-data-cutmix-fold-2'
 
     # -------------------
     verbose = True
