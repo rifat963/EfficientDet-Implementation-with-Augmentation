@@ -11,9 +11,10 @@ import matplotlib.pyplot as plt
 from sklearn.model_selection import StratifiedKFold
 from torch.utils.data import Dataset, DataLoader
 from torch.utils.data.sampler import SequentialSampler, RandomSampler
-from augmentation.augmentation import DatasetRetriever,get_train_transforms,get_valid_transforms
+from augmentation.augmentation import DatasetRetriever, get_train_transforms, get_valid_transforms
 from train_config import TrainGlobalConfig
 from model import Fitter, get_net
+from sklearn import model_selection
 SEED = 42
 
 def seed_everything(seed):
@@ -37,7 +38,7 @@ def StratifiedKFold_CrossValidation(marking,bboxs):
             df_folds['bbox_count'].apply(lambda x: f'_{x // 15}').values.astype(str)
         )
     df_folds.loc[:, 'fold'] = 0
-
+            
     for fold_number, (train_index, val_index) in enumerate(skf.split(X=df_folds.index,
                                                                      y=df_folds['stratify_group'])):
         df_folds.loc[df_folds.iloc[val_index].index, 'fold'] = fold_number
@@ -92,10 +93,11 @@ if __name__== '__main__':
     #for i, column in enumerate(['x', 'y', 'w', 'h']):
     #    marking[column] = bboxs[:,i]
     #marking.drop(columns=['bbox'], inplace=True)
+        
 
     df_folds = StratifiedKFold_CrossValidation(marking,bboxs)
 
-    fold_number = 3
+    fold_number = 2
 
     train_dataset = DatasetRetriever(
         image_ids=df_folds[df_folds['fold'] != fold_number].index.values,
@@ -110,6 +112,7 @@ if __name__== '__main__':
         transforms=get_valid_transforms(),
         test=True,
     )
+
     """
     #----- visualize the image --------
     image, target, image_id = train_dataset[5]
@@ -131,11 +134,11 @@ if __name__== '__main__':
 #    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 #    print('Using device:', device)
 #    # Additional Info when using cuda
-#    if device.type == 'cuda':
-#        print(torch.cuda.get_device_name(0))
-#        print('Memory Usage:')
-#        print('Allocated:', round(torch.cuda.memory_allocated(0) / 1024 ** 3, 1), 'GB')
-#        print('Cached:   ', round(torch.cuda.memory_cached(0) / 1024 ** 3, 1), 'GB')
+    if device.type == 'cuda':
+        print(torch.cuda.get_device_name(0))
+        print('Memory Usage:')
+        print('Allocated:', round(torch.cuda.memory_allocated(0) / 1024 ** 3, 1), 'GB')
+        print('Cached:   ', round(torch.cuda.memory_cached(0) / 1024 ** 3, 1), 'GB')
 
     run_training()
 

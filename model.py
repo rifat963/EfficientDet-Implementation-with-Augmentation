@@ -173,9 +173,9 @@ class Fitter:
 
 def get_net():
     torch.cuda.empty_cache() 
-    config = get_efficientdet_config('tf_efficientdet_d7')
+    config = get_efficientdet_config('tf_efficientdet_d5')
     net = EfficientDet(config, pretrained_backbone=False)
-    checkpoint = torch.load('efficientdet_d7-f05bf714.pth')
+    checkpoint = torch.load('efficientdet_d5-ef44aea8.pth')
     net.load_state_dict(checkpoint)
     config.num_classes = 1
     config.image_size = 1024
