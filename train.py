@@ -1,6 +1,6 @@
 import sys
 sys.path.insert(0, "tim-efficientdet-package")
-
+from apex import amp
 import torch
 import os
 import random

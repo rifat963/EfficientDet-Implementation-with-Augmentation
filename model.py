@@ -3,7 +3,7 @@ sys.path.insert(0, "tim-efficientdet-package")
 
 from effdet import get_efficientdet_config, EfficientDet, DetBenchTrain
 from effdet.efficientdet import HeadNet
-
+from apex import amp
 import torch
 import os
 from datetime import datetime
