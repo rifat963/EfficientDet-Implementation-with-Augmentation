@@ -27,7 +27,7 @@ TRAIN_ROOT_PATH = 'custom-dataset/train'
 def get_train_transforms():
     return A.Compose(
         [
-            A.RandomSizedCrop(min_max_height=(800, 800), height=1024, width=1024, p=0.5),
+            #A.RandomSizedCrop(min_max_height=(800, 800), height=1024, width=1024, p=0.5),
             A.OneOf([
                 A.HueSaturationValue(hue_shift_limit = 0.014,#=0.2, 
                                      sat_shift_limit = 0.68,#0.2,
