@@ -4,7 +4,6 @@ sys.path.insert(0, "tim-efficientdet-package")
 from effdet import get_efficientdet_config, EfficientDet, DetBenchTrain
 from effdet.efficientdet import HeadNet
 
-
 import torch
 import os
 from datetime import datetime
@@ -43,10 +42,10 @@ class Fitter:
 
         self.log_path = f'{self.base_dir}/log.txt'
         self.best_summary_loss = 10 ** 5
-
         self.model = model
         self.device = device
-
+        self.mixed_precision = config.mixed_precision
+        self.accumulate = config.accumulate
         param_optimizer = list(self.model.named_parameters())
         no_decay = ['bias', 'LayerNorm.bias', 'LayerNorm.weight']
         optimizer_grouped_parameters = [
@@ -55,6 +54,10 @@ class Fitter:
         ]
 
         self.optimizer = torch.optim.AdamW(self.model.parameters(), lr=config.lr)
+        self.model = model.to(device)
+        if self.mixed_precision:
+            self.model, self.optimizer = amp.initialize(self.model, self.optimizer, opt_level="O1", verbosity=0)
+
         self.scheduler = config.SchedulerClass(self.optimizer, **config.scheduler_params)
         self.log(f'Fitter prepared. Device is {self.device}')
 
@@ -132,22 +135,24 @@ class Fitter:
             boxes = [target['boxes'].to(self.device).float() for target in targets]
             labels = [target['labels'].to(self.device).float() for target in targets]
 
-            self.optimizer.zero_grad()
-
             loss, _, _ = self.model(images, boxes, labels)
+            # The code from YOLO V5
+            if self.mixed_precision:
+                with amp.scale_loss(loss, self.optimizer) as scaled_loss:
+                    scaled_loss.backward()
+            else:
+                loss.backward()
 
-            loss.backward()
+            if step % self.accumulate == 0:
+                self.optimizer.step()
+                self.optimizer.zero_grad()
 
             summary_loss.update(loss.detach().item(), batch_size)
-
-            self.optimizer.step()
-
-            if self.config.step_scheduler:
-                self.scheduler.step()
 
         return summary_loss
 
     def save(self, path):
+
         self.model.eval()
         torch.save({
             'model_state_dict': self.model.model.state_dict(),

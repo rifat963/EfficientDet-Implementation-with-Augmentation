@@ -27,7 +27,7 @@ def seed_everything(seed):
     torch.backends.cudnn.benchmark = True
 
 def StratifiedKFold_CrossValidation(marking,bboxs):
-    skf = StratifiedKFold(n_splits=10, shuffle=True, random_state=1234)
+    skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1234)
 
     df_folds = marking[['image_id']].copy()
     df_folds.loc[:, 'bbox_count'] = 1
@@ -97,7 +97,7 @@ if __name__== '__main__':
 
     df_folds = StratifiedKFold_CrossValidation(marking,bboxs)
 
-    fold_number = 5
+    fold_number = 3
 
     train_dataset = DatasetRetriever(
         image_ids=df_folds[df_folds['fold'] != fold_number].index.values,
