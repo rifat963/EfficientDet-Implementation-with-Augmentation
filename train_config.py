@@ -10,7 +10,7 @@ class TrainGlobalConfig:
     lr = 0.001
     mixed_precision = True
     accumulate = 16
-    folder = 'effdet5-cutmix-mosaic-apex-fold3'
+    folder = 'effdet5-cutmix-apex-fold3-batch2'
 
     # -------------------
     verbose = True
