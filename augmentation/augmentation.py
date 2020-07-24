@@ -68,7 +68,8 @@ def get_valid_transforms():
             label_fields=['labels']
         )
     )
-
+    
+'''
 class DatasetRetriever(Dataset):
 
     def __init__(self, marking, image_ids, transforms=None, test=False):
@@ -89,7 +90,7 @@ class DatasetRetriever(Dataset):
             #image, boxes = self.load_image_and_boxes(index)
             image, boxes = self.load_cutmix_image_and_boxes(index)
         
-        '''
+        
         r = random.random()
         if self.test or r < 0.80:
             image, boxes, labels = self.load_image_and_boxes(index)
@@ -98,7 +99,7 @@ class DatasetRetriever(Dataset):
         else: 
             image, boxes, labels = self.load_mixup_iamge_and_boxes(index)    
 
-        '''
+        
         # there is only one class
         labels = torch.ones((boxes.shape[0],), dtype=torch.int64)
 
@@ -126,6 +127,7 @@ class DatasetRetriever(Dataset):
     def __len__(self) -> int:
         return self.image_ids.shape[0]
 
+    
     def load_image_and_boxes(self, index):
         image_id = self.image_ids[index]
         #print(image_id)
@@ -137,6 +139,28 @@ class DatasetRetriever(Dataset):
         boxes[:, 2] = boxes[:, 0] + boxes[:, 2]
         boxes[:, 3] = boxes[:, 1] + boxes[:, 3]
         return image, boxes
+    
+    def load_image_and_boxes(self, index):
+        image_id = self.image_ids[index]
+        records = self.marking[self.marking['image_id'] == image_id]
+        source_path = records['source_path'].iloc[0]
+        image = cv2.imread(f'{source_path}/{image_id}.jpg', cv2.IMREAD_COLOR)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB).astype(np.uint8)
+        #image = cv2.addWeighted(image, 4, cv2.GaussianBlur(image, (0,0) , 10), -4 ,128)
+        #image = (image - IMAGENET_DEFAULT_MEAN) / IMAGENET_DEFAULT_STD
+        boxes = records[['x', 'y', 'w', 'h']].values
+        labels = records['class'].values
+        boxes[:, 2] = boxes[:, 0] + boxes[:, 2]
+        boxes[:, 3] = boxes[:, 1] + boxes[:, 3]
+        return image, boxes, labels
+
+    def load_mixup_iamge_and_boxes(self, index):
+        image, boxes, labels = self.load_image_and_boxes(index)
+        r_image, r_boxes, r_labels = self.load_image_and_boxes(random.randint(0, self.image_ids.shape[0] - 1))
+        mixup_image = (image + r_image) / 2
+        mixup_boxes = np.concatenate([boxes, r_boxes], axis=0)
+        mixup_labels = np.concatenate([labels, r_labels], axis=0)
+        return mixup_image, mixup_boxes, mixup_labels
 
     def load_cutmix_image_and_boxes(self, index, imsize=1024):
         """
@@ -183,7 +207,6 @@ class DatasetRetriever(Dataset):
         result_boxes = result_boxes[
             np.where((result_boxes[:, 2] - result_boxes[:, 0]) * (result_boxes[:, 3] - result_boxes[:, 1]) > 0)]
         return result_image, result_boxes
-
 '''
 class DatasetRetriever(Dataset):
 
@@ -289,4 +312,3 @@ class DatasetRetriever(Dataset):
             np.where((result_boxes[:, 2] - result_boxes[:, 0]) * (result_boxes[:, 3] - result_boxes[:, 1]) > 0)]
         return result_image, result_boxes
 
-'''
