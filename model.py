@@ -53,7 +53,9 @@ class Fitter:
             {'params': [p for n, p in param_optimizer if any(nd in n for nd in no_decay)], 'weight_decay': 0.0}
         ]
 
-        self.optimizer = torch.optim.AdamW(self.model.parameters(), lr=config.lr)
+        #self.optimizer = torch.optim.AdamW(self.model.parameters(), lr=config.lr)
+        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=config.lr)
+        
         self.model = model.to(device)
         if self.mixed_precision:
             self.model, self.optimizer = amp.initialize(self.model, self.optimizer, opt_level="O1", verbosity=0)
