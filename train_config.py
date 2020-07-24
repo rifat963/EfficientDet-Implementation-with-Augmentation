@@ -5,9 +5,9 @@ warnings.filterwarnings("ignore")
 
 class TrainGlobalConfig:
     num_workers = 16
-    batch_size = 4
+    batch_size = 2
     n_epochs = 80 # n_epochs = 40
-    lr = 0.0002
+    lr = 0.001
     mixed_precision = True
     accumulate = 16
     folder = 'effdet5-cutmix-apex-fold3'

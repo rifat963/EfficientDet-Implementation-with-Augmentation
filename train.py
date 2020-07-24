@@ -84,7 +84,7 @@ if __name__== '__main__':
     #bboxs = np.stack(marking['bbox'].apply(lambda x: np.fromstring(x[1:-1], sep=',')))
     #print(bboxs)
 
-    marking = pd.read_csv('custom-dataset/train_clean.csv')
+    marking = pd.read_csv('custom-dataset/train.csv')
     bboxs = np.stack(marking['bbox'].apply(lambda x: np.fromstring(x[1:-1], sep=',')))
     for i, column in enumerate(['x', 'y', 'w', 'h']):
         marking[column] = bboxs[:,i]
@@ -97,7 +97,7 @@ if __name__== '__main__':
 
     df_folds = StratifiedKFold_CrossValidation(marking,bboxs)
 
-    fold_number = 3
+    fold_number = 0
 
     train_dataset = DatasetRetriever(
         image_ids=df_folds[df_folds['fold'] != fold_number].index.values,
