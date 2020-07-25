@@ -27,7 +27,7 @@ TRAIN_ROOT_PATH = 'custom-dataset/train'
 def get_train_transforms():
     return A.Compose(
         [
-            #A.RandomSizedCrop(min_max_height=(800, 800), height=1024, width=1024, p=0.5),
+            A.RandomSizedCrop(min_max_height=(800, 800), height=1024, width=1024, p=0.5),
             A.OneOf([
                 A.HueSaturationValue(hue_shift_limit = 0.014,#=0.2, 
                                      sat_shift_limit = 0.68,#0.2,
@@ -37,7 +37,7 @@ def get_train_transforms():
                 #                           contrast_limit=0.2, p=0.9),
             ],p=0.9),
             #A.ToGray(p=0.01),
-            A.ShiftScaleRotate(scale_limit=(-0.5, 0.5), rotate_limit=0, shift_limit=0., p=0.5, border_mode=0),
+            #A.ShiftScaleRotate(scale_limit=(-0.5, 0.5), rotate_limit=0, shift_limit=0., p=0.5, border_mode=0),
             A.RandomRotate90(p=0.5),
             A.HorizontalFlip(p=0.5),
             A.VerticalFlip(p=0.5),
@@ -221,11 +221,23 @@ class DatasetRetriever(Dataset):
     def __getitem__(self, index: int):
         image_id = self.image_ids[index]
 
+        '''
         if self.test or random.random() > 0.5:
             image, boxes = self.load_image_and_boxes(index)
         else:
             #image, boxes = self.load_image_and_boxes(index)
             image, boxes = self.load_cutmix_image_and_boxes(index)
+
+            #image, boxes = self.load_mixup_iamge_and_boxes(index)
+        '''
+        r = random.random()
+        if self.test or r < 0.80:
+            image, boxes = self.load_image_and_boxes(index)
+        elif r < 0.90:
+            image, boxes = self.load_cutmix_image_and_boxes(index)
+        else: 
+            image, boxes = self.load_mixup_iamge_and_boxes(index) 
+            
 
         # there is only one class
         labels = torch.ones((boxes.shape[0],), dtype=torch.int64)
@@ -265,6 +277,14 @@ class DatasetRetriever(Dataset):
         boxes[:, 2] = boxes[:, 0] + boxes[:, 2]
         boxes[:, 3] = boxes[:, 1] + boxes[:, 3]
         return image, boxes
+
+    def load_mixup_iamge_and_boxes(self, index):
+        image, boxes = self.load_image_and_boxes(index)
+        #r_image, r_boxes, r_labels = self.load_image_and_boxes(random.randint(0, self.image_ids.shape[0] - 1))
+        mixup_image = (image + r_image) / 2
+        mixup_boxes = np.concatenate([boxes, r_boxes], axis=0)
+        #mixup_labels = np.concatenate([labels, r_labels], axis=0)
+        return mixup_image, mixup_boxes
 
     def load_cutmix_image_and_boxes(self, index, imsize=1024):
         """

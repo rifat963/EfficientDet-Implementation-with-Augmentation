@@ -7,10 +7,10 @@ class TrainGlobalConfig:
     num_workers = 16
     batch_size = 2
     n_epochs = 80 # n_epochs = 40
-    lr = 0.001
+    lr = 0.0002
     mixed_precision = True
     accumulate = 16
-    folder = 'effdet5-cutmix-apex-fold3-batch2'
+    folder = 'effdet5-cutmix-mosaic-fold3'
 
     # -------------------
     verbose = True
