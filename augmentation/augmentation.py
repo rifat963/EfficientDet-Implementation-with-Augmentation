@@ -280,7 +280,7 @@ class DatasetRetriever(Dataset):
 
     def load_mixup_iamge_and_boxes(self, index):
         image, boxes = self.load_image_and_boxes(index)
-        #r_image, r_boxes, r_labels = self.load_image_and_boxes(random.randint(0, self.image_ids.shape[0] - 1))
+        r_image, r_boxes = self.load_image_and_boxes(random.randint(0, self.image_ids.shape[0] - 1))
         mixup_image = (image + r_image) / 2
         mixup_boxes = np.concatenate([boxes, r_boxes], axis=0)
         #mixup_labels = np.concatenate([labels, r_labels], axis=0)
