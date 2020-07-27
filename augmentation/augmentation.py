@@ -27,15 +27,15 @@ TRAIN_ROOT_PATH = 'custom-dataset/train'
 def get_train_transforms():
     return A.Compose(
         [
-            A.RandomSizedCrop(min_max_height=(800, 800), height=1024, width=1024, p=0.5),
-            A.OneOf([
-                A.HueSaturationValue(hue_shift_limit = 0.014,#=0.2, 
+            A.RandomSizedCrop(min_max_height=(650, 1024), height=1024, width=1024, p=0.5),
+            #A.OneOf([
+            A.HueSaturationValue(hue_shift_limit = 0.014,#=0.2, 
                                      sat_shift_limit = 0.68,#0.2,
                                      val_shift_limit=  0.36,#0.2, 
-                                     p=0.9),
-                #A.RandomBrightnessContrast(brightness_limit=0.2,
-                #                           contrast_limit=0.2, p=0.9),
-            ],p=0.9),
+                                     p=0.75),
+            A.RandomBrightnessContrast(brightness_limit=0.1,
+                                          contrast_limit=0.1, p=0.3),
+            #],p=0.9),
             #A.ToGray(p=0.01),
             #A.ShiftScaleRotate(scale_limit=(-0.5, 0.5), rotate_limit=0, shift_limit=0., p=0.5, border_mode=0),
             A.RandomRotate90(p=0.5),
@@ -231,9 +231,9 @@ class DatasetRetriever(Dataset):
             #image, boxes = self.load_mixup_iamge_and_boxes(index)
         '''
         r = random.random()
-        if self.test or r < 0.80:
+        if self.test or r > 0.5:
             image, boxes = self.load_image_and_boxes(index)
-        elif r < 0.90:
+        elif 0.25 < r <=0.50:
             image, boxes = self.load_cutmix_image_and_boxes(index)
         else: 
             image, boxes = self.load_mixup_iamge_and_boxes(index) 
