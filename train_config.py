@@ -25,7 +25,7 @@ class TrainGlobalConfig:
     scheduler_params = dict(
              max_lr=0.001,
              epochs=n_epochs,
-             steps_per_epoch=int(len(train_dataset) / batch_size),
+             steps_per_epoch=int(2699 / batch_size),
              pct_start=0.1,
              anneal_strategy='cos',
              final_div_factor=10**5

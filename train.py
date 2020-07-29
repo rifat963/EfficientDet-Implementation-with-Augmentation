@@ -106,12 +106,15 @@ if __name__== '__main__':
         test=False,
     )
 
+    
     validation_dataset = DatasetRetriever(
         image_ids=df_folds[df_folds['fold'] == fold_number].index.values,
         marking=marking,
         transforms=get_valid_transforms(),
         test=True,
     )
+
+    print(len(train_dataset))
 
     """
     #----- visualize the image --------
