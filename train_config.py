@@ -10,7 +10,7 @@ class TrainGlobalConfig:
     lr = 0.001#0.0002
     mixed_precision = True
     accumulate = 16
-    folder = 'effdet5-cutmix-mosaic-fold3-with-change-augmentation'
+    folder = 'effdet5-cutmix-mosaic-fold3-with-SGD-OneCycleLR'
 
     # -------------------
     verbose = True
