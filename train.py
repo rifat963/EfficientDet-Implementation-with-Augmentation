@@ -15,7 +15,7 @@ from augmentation.augmentation import DatasetRetriever, get_train_transforms, ge
 from train_config import TrainGlobalConfig
 from model import Fitter, get_net
 from sklearn import model_selection
-SEED = 1234
+SEED = 42
 
 def seed_everything(seed):
     random.seed(seed)
@@ -27,7 +27,7 @@ def seed_everything(seed):
     torch.backends.cudnn.benchmark = True
 
 def StratifiedKFold_CrossValidation(marking,bboxs):
-    skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=1234)
+    skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
 
     df_folds = marking[['image_id']].copy()
     df_folds.loc[:, 'bbox_count'] = 1
@@ -84,7 +84,7 @@ if __name__== '__main__':
     #bboxs = np.stack(marking['bbox'].apply(lambda x: np.fromstring(x[1:-1], sep=',')))
     #print(bboxs)
 
-    marking = pd.read_csv('custom-dataset/train_clean.csv')
+    marking = pd.read_csv('custom-dataset/train_new_clean.csv')
     bboxs = np.stack(marking['bbox'].apply(lambda x: np.fromstring(x[1:-1], sep=',')))
     for i, column in enumerate(['x', 'y', 'w', 'h']):
         marking[column] = bboxs[:,i]
